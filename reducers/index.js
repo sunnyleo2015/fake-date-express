@@ -4,6 +4,7 @@
 import * as types from '../action/action';
 import { combineReducers } from 'redux';
 import _ from 'lodash';
+import $ from "jquery";
 
 const initPageState = {
     status: 'Editor_Page'
@@ -21,20 +22,29 @@ function changePageState(state = initPageState, action){
             return state;
     }
 }
-
-const  initItemState = {
-    items: [
-        {
-            type:"text"
+function getItemJson() {
+    var getItem = $.ajax({
+        url:'/item',
+        type:'get',
+        async:false,
+        dataType:'json',
+        success:function (data) {
+            console.log(data);
         },
-        {
-            type:"text"
-        },
-        {
-            type:"text"
+        error:function (err) {
+            console.log(err);
         }
-    ]
+    });
+    return getItem;
+}
+
+const initItemState = {
+    items:  getItemJson().responseJSON
 };
+
+const initDeleteItem = [];
+
+console.log(initItemState);
 
 function changeItemState(state = initItemState, action){
     var type = action.type;
@@ -45,6 +55,9 @@ function changeItemState(state = initItemState, action){
 
     if(type == types.Remove_Item){
         let newItems = _.filter(state.items, (x, index)=>{return index != action.index})
+        let deleteItems = _.filter(state.items, (x, index)=>{return index == action.index})
+        initDeleteItem.push(deleteItems[0]);
+        console.log(initDeleteItem);
         return _.assign({}, state, {items: newItems});
     }
     return state;
