@@ -3,7 +3,7 @@
  */
 import store from '../store';
 import {to_Editor_Page, to_Preview_Page} from '../action/action';
-import {add_Item, remove_Item} from '../action/action';
+import {add_Item, remove_Item, get_Item} from '../action/action';
 export function show_Editor_Page(){
     store.dispatch(to_Editor_Page());
 }
@@ -18,4 +18,8 @@ export function addItem(item) {
 
 export function removeItem(index){
     store.dispatch(remove_Item(index));
+}
+
+export function getItem() {
+    store.dispatch(get_Item());
 }

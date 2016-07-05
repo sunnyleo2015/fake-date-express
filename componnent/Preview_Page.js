@@ -3,11 +3,12 @@
  */
 import * as type from '../action/action';
 import React, { Component, PropTypes } from 'react';
-import * as changePageAPI from '../handle/Page_API';
+import * as changePageAPI from '../handler/Page_API';
 import $ from "jquery";
-import store from '../store';
-import { createStore } from 'redux';
-import reducers from '../reducers/index';
+import { connect } from 'react-redux'
+//import store from '../store';
+//import { createStore } from 'redux';
+//import reducers from '../reducers/index';
 
 class Preview_Page extends Component{
     constructor(props){
@@ -15,14 +16,17 @@ class Preview_Page extends Component{
     }
     toEditorPage(){
         changePageAPI.show_Editor_Page();
+        this.context.router.push("/editor");
+
     }
-    /*postItem(){
-        var myitems = store.getState().itemsState.items
+    postItem(){
+        //var myitems = store.getState().itemsState.items
+        var myitems = this.props.items;
         console.log(myitems);
         var setItem = $.ajax({
             url:'/setItem',
             type:'get',
-            async:false,
+            async:true,
             dataType:'json',
             data: {data: myitems},
             success:function (data) {
@@ -33,17 +37,28 @@ class Preview_Page extends Component{
             }
         });
         return setItem;
-    }*/
+    }
     render(){
+        var self = this;
+        /*var self = this;
+        var a = function(e) {
+            self.postItem();
+        }
+
+        (e) => {
+            this.postItem()
+        }
+
+        e => this.postItem()*/
         return(
             <div>
-                <button type="button" /*onClick={this.postItem}*/>Preview_Page</button>
+                <button type="button" onClick={e=>this.postItem()}>Preview_Page</button>
                 <ul className="Preview_From">
                     {
                         this.props.items.map((item) =>{
                             return (<li>
                                 {(()=> {
-                                    if(item.type === 'date' && item.state === 'show') {
+                                    if(item.type === 'date') {
                                         return(<input type="date"></input>);
                                     }  else {
                                         return(<input type="text"></input>);
@@ -53,11 +68,24 @@ class Preview_Page extends Component{
                         })
                     }
                 </ul>
-                <button type="button" onClick={this.toEditorPage}>BACK</button>
+                <button type="button" onClick={e=>self.toEditorPage(e)}>BACK</button>
             </div>
         );
 
     }
 }
 
+Preview_Page.propTypes = {
+    status: PropTypes.string.isRequired
+};
+Preview_Page.contextTypes = {
+    router: React.PropTypes.object
+};
+function mapStateToProps(state, ownProps) {
+    return {
+        status: state.pageState.status
+    }
+}
+export default connect(mapStateToProps, {
+})(Preview_Page)
 export default Preview_Page;

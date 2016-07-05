@@ -3,17 +3,22 @@
  */
 import * as type from '../action/action';
 import Window_Page from './Window_Page'
-import React, {Component ,Proptype} from 'react';
+import React, { Component, PropTypes } from 'react';
 import ReactDOM from 'react-dom';
-import * as changePageAPI from '../handle/Page_API';
+import * as changePageAPI from '../handler/Page_API';
 import $ from "jquery"
-import store from '../store'
+//import store from '../store'
+import { connect } from 'react-redux';
+
+
 class Editor_Page extends Component{
     constructor(props){
         super(props);
     }
     toPreviewPage(){
         changePageAPI.show_Preview_Page();
+        console.log(this.context);
+        this.context.router.push("/preview");
     }
     openWindow(){
         ReactDOM.render(
@@ -31,7 +36,7 @@ class Editor_Page extends Component{
         var self = this;
         return(
             <div>
-                <button onClick={this.toPreviewPage}>Editor_Page</button>
+                <button onClick={e=>self.toPreviewPage(e)}>Editor_Page</button>
                 <ul className="Editor_From">
                     {
                         this.props.items.map((item, index) =>{
@@ -54,5 +59,19 @@ class Editor_Page extends Component{
         )
     }
 }
+
+Editor_Page.propTypes = {
+    status: PropTypes.string.isRequired
+};
+Editor_Page.contextTypes = {
+    router: React.PropTypes.object
+};
+function mapStateToProps(state, ownProps) {
+    return {
+        status: state.pageState.status
+    }
+};
+export default connect(mapStateToProps, {
+})(Editor_Page);
 
 export default Editor_Page;

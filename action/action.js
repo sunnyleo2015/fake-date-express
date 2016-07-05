@@ -1,6 +1,8 @@
 /**
  * Created by leo on 16-6-28.
  */
+export const Get_Item = 'Get_Item'
+
 export const Editor_Page = 'Editor_Page';
 export const Preview_Page = 'Preview_Page';
 
@@ -30,5 +32,11 @@ export function remove_Item(index) {
     return{
         type: Remove_Item,
         index
+    }
+}
+
+export function get_Item(){
+    return{
+        type: Get_Item
     }
 }

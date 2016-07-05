@@ -4,9 +4,9 @@
 import * as type from '../action/action';
 import React, {Component ,Proptype} from 'react';
 import $ from "jquery"
-import * as changePageAPI from '../handle/Page_API';
+import * as changePageAPI from '../handler/Page_API';
 import ReactDOM from 'react-dom';
-import store from '../store'
+//import store from '../store'
 
 class Window_Page extends Component{
     constructor(props) {
@@ -27,7 +27,7 @@ class Window_Page extends Component{
     add_Item(){
         var itemtype = $("input[name='itemType']:checked").val();
         //alert(itemtype);
-        changePageAPI.addItem({type:itemtype});
+        changePageAPI.addItem(itemtype);
     }
     render(){
         return <div className="myWindow">
